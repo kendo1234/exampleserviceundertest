@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id "com.github.lkishalmi.gatling" version "3.3.0"
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+
+}
+
+group = 'com.cdwebservice'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+apply plugin: 'scala'
+dependencies {
+	testCompile 'junit:junit:4.12'
+	compile 'org.scala-lang:scala-library:2.11.8'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	testImplementation 'io.rest-assured:rest-assured:3.3.0'
+	testImplementation ('io.rest-assured:json-path:3.3.0')
+	testImplementation ('io.rest-assured:xml-path:3.3.0')
+	testImplementation(group: 'junit', name: 'junit', version: '4.12')
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+test {
+	useJUnitPlatform{
+		excludeTags 'API'}
+
+}
+
+task endpointTests(type: Test) {
+	useJUnitPlatform{
+		includeTags 'API'
+		mustRunAfter test
+	}
+}
+
