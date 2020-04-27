@@ -1,11 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('Compile') {
+        stage("Build Gradle") {
             steps {
-                gradlew('clean')
+                sh 'gradle build'
             }
         }
-
+        stage("Run Tests") {
+            steps {
+                sh 'gradle test'
+            }
+            }
         }
     }
